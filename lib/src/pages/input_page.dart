@@ -10,6 +10,8 @@ class _InputPageState extends State<InputPage> {
   String _email = '';
   String _password = '';
   String _fecha = '';
+  String _opcionSeleccionada = 'Volar';
+  List<String> _poderes = ['Volar', 'Rayos X', 'Super aliento', 'Super vista'];
   TextEditingController _inputFieldDateController = new TextEditingController();
 
   // Widget Build
@@ -30,12 +32,15 @@ class _InputPageState extends State<InputPage> {
           Divider(),
           _crearFecha(context),
           Divider(),
+          _crearDropdown(),
+          Divider(),
           _crearPersona(),
         ],
       ),
     );
   }
 
+  // start _crearInput
   Widget _crearInput() {
     return TextField(
       autofocus: false,
@@ -56,7 +61,9 @@ class _InputPageState extends State<InputPage> {
       },
     );
   }
+  // end _crearInput
 
+  // start _crearEmail
   Widget _crearEmail() {
     return TextField(
       keyboardType: TextInputType.emailAddress,
@@ -74,7 +81,9 @@ class _InputPageState extends State<InputPage> {
       },
     );
   }
+  // end _crearEmail
 
+  // start _crearPassword
   Widget _crearPassword() {
     return TextField(
       obscureText: true,
@@ -92,7 +101,9 @@ class _InputPageState extends State<InputPage> {
       },
     );
   }
+  // end _crearPassword
 
+  // start _crearFecha
   Widget _crearFecha(BuildContext context) {
     return TextField(
       enableInteractiveSelection: false,
@@ -111,7 +122,9 @@ class _InputPageState extends State<InputPage> {
       },
     );
   }
+  // end _crearFecha
 
+  // start _selectDate
   _selectDate(BuildContext context) async {
     DateTime picked = await showDatePicker(
       context: context,
@@ -129,21 +142,50 @@ class _InputPageState extends State<InputPage> {
       });
     }
   }
+  // end _selectDate
 
-  Widget _crearPersona() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ListTile(
-          title: Text('Nombre: $_nombre'),
+  // Lista de dropdown
+  List<DropdownMenuItem<String>> getOpcionesDropdown() {
+    List<DropdownMenuItem<String>> lista = new List();
+
+    _poderes.forEach((poder) {
+      lista.add(DropdownMenuItem(
+        child: Text(poder),
+        value: poder,
+      ));
+    });
+
+    return lista;
+  }
+
+  // start _crearDropdown
+  Widget _crearDropdown() {
+    return Row(
+      children: <Widget>[
+        Icon(Icons.select_all),
+        SizedBox(width: 30.0),
+        Expanded(
+          child: DropdownButton(
+              value: _opcionSeleccionada,
+              items: getOpcionesDropdown(),
+              onChanged: (opt) {
+                _opcionSeleccionada = opt;
+                print(opt);
+              }),
         ),
-        ListTile(
-          title: Text('Email: $_email'),
-        ),
-        ListTile(
-          title: Text('Password: $_password'),
-        )
       ],
     );
+    //
   }
+  // end _crearDropdown
+
+  // start _crearPersona
+  Widget _crearPersona() {
+    return ListTile(
+      title: Text('Nombre: $_nombre'),
+      subtitle: Text('Email: $_email'),
+      trailing: Text(_opcionSeleccionada),
+    );
+  }
+  // end _crearPersona
 }
