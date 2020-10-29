@@ -182,7 +182,7 @@ class _InputPageState extends State<InputPage> {
   // start _crearPersona
   Widget _crearPersona() {
     return ListTile(
-      title: Text('Nombre: $_nombre'),
+      title: Text('Nombre: $_nombre ( $_password )'),
       subtitle: Text('Email: $_email'),
       trailing: Text(_opcionSeleccionada),
     );
